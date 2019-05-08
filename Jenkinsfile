@@ -16,13 +16,19 @@ pipeline {
 	  stages{    
 		  	stage('Checkout') {      
 		  		steps{        
-		  			echo "------------>Checkout<------------"      
+		  			checkout([$class: 'GitSCM', branches: [[name: '*/master']],
+		  			doGenerateSubmoduleConfigurations: false, 
+		  			extensions: [], 
+		  			gitTool:'Git_Centos', 
+		  			submoduleCfg: [], 
+		  			userRemoteConfigs: [[credentialsId:'GitHub_anthonyhernandez', 
+		  			url:'https://github.com/AnthonyProg/andCeiba.git']]])      
 		  		}    
 		  	}    
 		  	
 		  	stage('Unit Tests') {      
 		  		steps{        
-		  			echo "------------>Unit Tests<------------"      
+		  			sh 'gradle --b ./build.gradle test'      
 		  		}    
 		  	}    
 		  	
@@ -35,8 +41,7 @@ pipeline {
 		  		steps{        
 		  			echo '------------>Code analysis<------------'        
 		  			withSonarQubeEnv('Sonar') {
-		  				sh "${tool name: 'SonarScanner',
-		  				type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner-Dproject.settings=sonar-project.properties"
+		  				sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner-Dproject.settings=sonar-project.properties"
 		        	}      
 		        }    
 		    }    
