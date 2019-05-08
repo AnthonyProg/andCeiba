@@ -41,13 +41,13 @@ pipeline {
 		  		steps{        
 		  			echo '------------>Code analysis<------------'        
 		  			withSonarQubeEnv('Sonar') {
-		  				sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner-Dproject.settings=sonar-project.properties"
+		  				sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner"
 		        	}      
 		        }    
 		    }    
 		    stage('Build') {      
 		    	steps {        
-		    		echo "------------>Build<------------"      
+		    		sh 'gradle --b ./build.gradle build -x test'      
 		    	}    
 		    }  
 	  }  
