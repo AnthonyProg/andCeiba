@@ -28,7 +28,7 @@ pipeline {
 		  	
 		    stage('Build') {      
 		    	steps {        
-		    		sh 'gradle --b ./build.gradle build -x test'      
+		    		sh 'gradle clean build'      
 		    	}    
 		    }      
 		  	
