@@ -24,7 +24,13 @@ pipeline {
 		  			userRemoteConfigs: [[credentialsId:'GitHub_anthonyhernandez', 
 		  			url:'https://github.com/AnthonyProg/andCeiba.git']]])      
 		  		}    
-		  	}    
+		  	}
+		  	
+		    stage('Build') {      
+		    	steps {        
+		    		sh 'gradle --b ./build.gradle build -x test'      
+		    	}    
+		    }      
 		  	
 		  	stage('Unit Tests') {      
 		  		steps{        
@@ -44,12 +50,7 @@ pipeline {
 		  				sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner"
 		        	}      
 		        }    
-		    }    
-		    stage('Build') {      
-		    	steps {        
-		    		sh 'gradle --b ./build.gradle build -x test'      
-		    	}    
-		    }  
+		    }
 	  }  
   
 	  post {    
